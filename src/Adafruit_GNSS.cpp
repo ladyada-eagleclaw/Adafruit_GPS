@@ -209,7 +209,7 @@ static nmea_number_status_t parseSixDigits(nmea_span_t field, uint8_t *pairs) {
 
 /**************************************************************************/
 /*!
-    @brief Validate GGA, RMC, GLL, or GSA fields before updating navigation data.
+    @brief Validate standard fields before updating navigation data.
     @param type Three-character sentence type, without its talker prefix.
     @param fields Fields after the address comma and before the checksum.
     @return Status and the first invalid or missing one-based field position.
