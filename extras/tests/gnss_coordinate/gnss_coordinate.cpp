@@ -36,9 +36,19 @@ int main() {
   invalid("", NULL, NMEA_NUMBER_MISSING);
   invalid("", "N", NMEA_NUMBER_EMPTY);
   invalid("4807.038", "", NMEA_NUMBER_EMPTY);
-  const char *bad[] = {"4807.", "4807.1x", "4807.1.2", "4807e1", "+4807.1",
-                       "-4807.1", " 4807.1", "4807.1 ", "480.1", "04807.1",
-                       "480a.1", "4807,1", "4807.0000000000000x"};
+  const char *bad[] = {"4807.",
+                       "4807.1x",
+                       "4807.1.2",
+                       "4807e1",
+                       "+4807.1",
+                       "-4807.1",
+                       " 4807.1",
+                       "4807.1 ",
+                       "480.1",
+                       "04807.1",
+                       "480a.1",
+                       "4807,1",
+                       "4807.0000000000000x"};
   for (size_t i = 0; i < sizeof(bad) / sizeof(bad[0]); i++)
     invalid(bad[i], "N", NMEA_NUMBER_BAD_FORMAT);
   invalid("4807.038", "North", NMEA_NUMBER_BAD_FORMAT);
@@ -53,9 +63,11 @@ int main() {
   invalid("18000.0000000000001", "E", NMEA_NUMBER_OUT_OF_RANGE);
   invalid("65536.0", "E", NMEA_NUMBER_OUT_OF_RANGE);
   invalid("99999.0", "W", NMEA_NUMBER_OUT_OF_RANGE);
-  puts("PASS: missing, empty, syntax, overflow, and range failures clear outputs");
+  puts("PASS: missing, empty, syntax, overflow, and range failures clear "
+       "outputs");
 
-  // The buffers need not be NUL-terminated; bytes outside each span are ignored.
+  // The buffers need not be NUL-terminated; bytes outside each span are
+  // ignored.
   const char coordinate[] = {'4', '8', '0', '7', '.', '0', '3', '8', 'x'};
   const char hemisphere[] = {'N', 'x'};
   value = Adafruit_GNSS::parseCoordinate({coordinate, 8}, {hemisphere, 1});
@@ -73,10 +85,12 @@ int main() {
         char text[24];
         snprintf(text, sizeof(text), "%03u%02u.%09lu", degrees, minutes,
                  (unsigned long)fractions[i]);
-        int32_t expected = degrees * 10000000L +
-                           ((uint64_t)minutes * 1000000000 + fractions[i]) / 6000;
+        int32_t expected =
+            degrees * 10000000L +
+            ((uint64_t)minutes * 1000000000 + fractions[i]) / 6000;
         value = decode(text, "E");
-        assert(value.status == NMEA_NUMBER_VALID && value.degreesE7 == expected);
+        assert(value.status == NMEA_NUMBER_VALID &&
+               value.degreesE7 == expected);
         assert(decode(text, "W").degreesE7 == -expected);
       }
     }
