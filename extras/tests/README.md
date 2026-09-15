@@ -16,8 +16,11 @@ All tests use AddressSanitizer and UndefinedBehaviorSanitizer. Compiler
 warnings, failed checks, sanitizer findings, and a 30-second execution timeout
 fail the job. Other tests still run after an individual failure.
 
-The Arduino sketches use the real library sources with NMEA extensions enabled,
-including the marine and RMB checks. `extras/test_support` provides serial
+The Arduino sketches use the real library sources twice: once with
+`NMEA_EXTRAS=0` for the basic GPS API and once with `NMEA_EXTRAS=1` for the marine
+extensions. The RMB test checks that basic builds reject that unsupported
+sentence and that extended builds decode it without partial updates on error.
+Standalone C++ core tests run once. `extras/test_support` provides serial
 output and a real monotonic clock; the wakeup timeout test takes ten seconds.
 I2C, SPI, GPIO, and hardware serial input abort if used. This runs the parser
 and mock-stream regressions, not physical GPS/SD hardware or MCU emulation.
