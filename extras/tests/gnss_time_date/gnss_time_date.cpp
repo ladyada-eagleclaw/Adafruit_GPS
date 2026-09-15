@@ -39,9 +39,11 @@ int main() {
 
   badTime(NULL, NMEA_NUMBER_MISSING);
   badTime("", NMEA_NUMBER_EMPTY);
-  const char *badTimes[] = {"12345", "1234567", "123456.", "123456.0x",
-                            "+123456", "123456 ", "123456.1.2", "123456e2",
-                            "12a456", "123456.0000000000000000x"};
+  const char *badTimes[] = {"12345",      "1234567",
+                            "123456.",    "123456.0x",
+                            "+123456",    "123456 ",
+                            "123456.1.2", "123456e2",
+                            "12a456",     "123456.0000000000000000x"};
   for (size_t i = 0; i < sizeof(badTimes) / sizeof(badTimes[0]); i++)
     badTime(badTimes[i], NMEA_NUMBER_BAD_FORMAT);
   badTime("240000", NMEA_NUMBER_OUT_OF_RANGE);
@@ -69,7 +71,8 @@ int main() {
   badDate("310426", NMEA_NUMBER_OUT_OF_RANGE);
   badDate("290226", NMEA_NUMBER_OUT_OF_RANGE);
   badDate("300224", NMEA_NUMBER_OUT_OF_RANGE);
-  puts("PASS: dates, month lengths, leap years, and two-digit-year preservation");
+  puts("PASS: dates, month lengths, leap years, and two-digit-year "
+       "preservation");
 
   const char boundedTime[] = {'1', '2', '3', '4', '5', '6', '.', '7', 'x'};
   time = Adafruit_GNSS::parseTime({boundedTime, 8});
